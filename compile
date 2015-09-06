@@ -1,0 +1,29 @@
+#!/bin/bash
+
+while getopts apistu flag; do
+    case $flag in
+        a)
+            rm -rf build Resources
+            appc ti build --platform android -D development -T device \
+            --skip-js-minify -s 4.1.0.GA
+            ;;
+        i)
+            cd ../kanka-bluetooth/iphone
+            rm -rf build
+            python build.py || exit 1
+            mv com.ewin.kanka.bluetooth-iphone-1.0.zip ../../kanka-mobile/ && cd ../../kanka-mobile
+            unzip -o com.ewin.kanka.bluetooth-iphone-1.0.zip && rm com.ewin.kanka.bluetooth-iphone-1.0.zip
+            appc ti build --platform iphone --force --skip-js-minify -D test -T device \
+            -V "Marketing@ewin.cl Marketing@ewin.cl (PQ64QU83KM)" -F iphone -P 58cc2a0e-bed3-4952-b90e-4a6525c57fa3 \
+            -s 4.1.0.GA
+            ;;
+        u)
+            adb uninstall com.pelluch.cachetest
+            ;;
+        ?)
+            echo 'Invalid option'
+            echo 'Usage: ./compile -a(ndroid)'
+            exit 1
+            ;;
+    esac
+done

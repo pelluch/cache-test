@@ -9,3 +9,9 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+var App = {};
+
+App.log = require('log');
+
+Alloy.Globals.urlAPI = 'http://52.6.244.32/';
