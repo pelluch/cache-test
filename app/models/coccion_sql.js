@@ -13,7 +13,8 @@ exports.definition = {
     adapter: {
       type: 'sql', 
       collection_name: 'cocciones',
-      idAttribute: 'IDCoccion'
+      idAttribute: 'IDCoccion',
+      db_name: 'kanka'
     },
     debug: 0
   },    

@@ -47,7 +47,7 @@ App.Database.getCocciones({
 
 App.Database.syncAll();
 
-/* 
+
 var tiendaCateg = Alloy.createModel('tiendaCateg', {id:1});
 tiendaCateg.fetch({
     success: function(model, response, options) {
@@ -91,8 +91,8 @@ function fetchProductos(IDCateg) {
     });
 }
 
-*/ 
 /*
+
 var coccionesFavoritas = Alloy.createModel('coccionesFavoritas', {id: 'pablo.lluch@gmail.com'});
 coccionesFavoritas.fetch({
     success: function(model, response, options) {
@@ -130,6 +130,5 @@ coccionesPersonalizadas.fetch({
     error: function(model, response, options) {
     }
 });
-
 
 */
