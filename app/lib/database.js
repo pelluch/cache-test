@@ -9,6 +9,7 @@ var defaults = {
     sync: true
 };
 
+
 exports.getCarnes = function(opts) {
     opts = opts || {};
     _.defaults(opts, defaults);
@@ -110,7 +111,53 @@ exports.getCortes = function(opts) {
 
 
 exports.getCocciones = function(opts) {
+    opts = opts || {};
+    _.defaults(opts, defaults);
 
+    if(opts.source === exports.SQL) {
+        var coccionesSql = Alloy.createCollection('coccion_sql');
+        var table = coccionesSql.config.adapter.collection_name;
+        coccionesSql.fetch({
+            success: opts.success,
+            error: opts.error,
+            query: 'SELECT * from ' + table + ' where IDCorte="' + opts.IDCorte + '"'
+            
+        });
+    } else if(opts.source === exports.API) {
+        var cocciones = Alloy.createModel('cocciones', {
+            id: opts.IDCorte
+        });
+        cocciones.fetch({
+            success: function(model, response, options){    
+                var collection = Alloy.createCollection('coccion_sql');
+                var models = [];
+                for(var i = 0; i < response.length; ++i) {
+                    var coccionSql = Alloy.createModel('coccion_sql', response[i]);
+                    coccionSql.set('IDCorte', opts.IDCorte);
+                    // App.log('Carne sql: ', carneSql);
+                    models.push(coccionSql);
+                    // collection.add(carnesSql);
+                    if(opts.sync) {
+                        coccionSql.save(null, {
+                            success: function() {
+
+                            }, 
+                            error: function() {
+
+                            }
+                        });
+                        // var IDCorte = response[i].IDCorte;
+                    }
+                    // fetchCorte(IDCorte);
+                }
+                collection.reset(models);
+                opts.success(collection, response, options);
+            },
+            error: opts.error,
+        });
+    } else {
+        App.log('Invalid source: ', exports.source);
+    }
 };
 
 exports.getTiendaCategorias = function(opts) {
@@ -129,3 +176,49 @@ exports.getCoccionesPersonalizadas = function(opts) {
 
 };
 
+
+exports.syncAll = function() {
+    exports.getCarnes({
+        success: function(model, response, options) {
+            _.each(response, function(carne) {
+                syncCortes(carne.IDCarne);
+            });
+        },
+        error: function(model, response, options) {
+            App.log('Error');
+        },
+        source: App.Database.API,
+        sync: true
+    });
+};
+
+function syncCortes(IDCarne) {
+    exports.getCortes({
+        success: function(model, response, options) {
+            _.each(response, function(corte) {
+                syncCocciones(corte.IDCorte);
+            });
+        },
+        error: function(model, response, options) {
+            App.log('Error');
+        },
+        source: App.Database.API,
+        sync: true,
+        IDCarne: IDCarne
+    });
+    
+}
+
+function syncCocciones(IDCorte) {
+    exports.getCocciones({
+        success: function(model, response, options) {
+
+        },
+        error: function(model, response, options) {
+            App.log('Error');
+        },
+        source: App.Database.API,
+        sync: true,
+        IDCorte: IDCorte
+    });
+}

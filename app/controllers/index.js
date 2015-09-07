@@ -27,38 +27,27 @@ $.index.open();
     sync: true,
     IDCarne: "1"
 });
-*/ 
-
-/*
-
-var coccionesSql = Alloy.createCollection('coccion_sql');
 
 
-function fetchCoccion(IDCorte) {
-    var cocciones = Alloy.createModel('cocciones', {id:IDCorte});
-    cocciones.fetch({
-        success: function(model, response, options) {
-            for(var i = 0; i < response.length; ++i) {
-                App.log('Fetched coccion ', response[i]);
-                var coccionSql = Alloy.createModel('coccion_sql', response[i]);
-                coccionSql.set('IDCorte', IDCorte);
-                coccionSql.save(null, {
-                    success: function() {
-                        // App.log('Success for ' + i);
-                    },
-                    error: function() {
-                        App.log('Error for ' + i);
-                    }
-                });
-            }
-        },
-        error: function(model, response, options) {
 
-        }
-    });
-}
+App.Database.getCocciones({
+    success: function(model, response, options) {
+        App.log('Success! Got: ', model);
+    },
+    error: function(model, response, options) {
+        App.log('Error');
+    },
+    source: App.Database.API,
+    sync: true,
+    IDCorte: "2"
+});
 
 
+*/
+
+App.Database.syncAll();
+
+/* 
 var tiendaCateg = Alloy.createModel('tiendaCateg', {id:1});
 tiendaCateg.fetch({
     success: function(model, response, options) {
@@ -102,6 +91,7 @@ function fetchProductos(IDCateg) {
     });
 }
 
+*/ 
 /*
 var coccionesFavoritas = Alloy.createModel('coccionesFavoritas', {id: 'pablo.lluch@gmail.com'});
 coccionesFavoritas.fetch({
@@ -121,7 +111,6 @@ coccionesFavoritas.fetch({
     error: function(model, response, options) {
     }
 });
-
 
 var coccionesPersonalizadas = Alloy.createModel('favoritos', {id: 'pablo.lluch@gmail.com'});
 coccionesPersonalizadas.fetch({
@@ -143,17 +132,4 @@ coccionesPersonalizadas.fetch({
 });
 
 
-coccionesSql.fetch({
-    success: function(model, response, options){
-        var end = new Date().getTime();
-        var time = end - start;
-        App.log('Execution time: ' + time);
-        App.log('SQL cocciones');
-        App.log(typeof model);
-        App.log(model);
-    },
-    error: function(model, response, options){
-        App.log('error');
-    },
-});
 */
