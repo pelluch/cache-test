@@ -17,4 +17,7 @@ App.log = require('log');
 Alloy.Globals.urlAPI = 'http://52.6.244.32/';
 
 App.Database = require('database');
-Ti.Database.install('/databases/kanka', 'kanka');
+var db = Ti.Database.install('/databases/kanka', 'kanka');
+if(db) {
+    db.close();
+}
