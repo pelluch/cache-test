@@ -4,6 +4,8 @@ function doClick(e) {
 
 $.index.open();
 
+
+
 /* App.Database.getCarnes({
     success: function(model, response, options) {
         App.log('Success! Got: ', model);
@@ -44,7 +46,7 @@ App.Database.getCocciones({
 
 
 */
-
+/*
 App.Database.syncAll();
 
 
